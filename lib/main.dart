@@ -12,7 +12,9 @@ class Title extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: Duration(microseconds: 600),
+      curve: Curves.bounceIn,
       width: 60,
       height: 60,
       decoration: BoxDecoration(
@@ -48,8 +50,14 @@ class MainApp extends StatelessWidget {
   }
 }
 
-class GamePage extends StatelessWidget {
+class GamePage extends StatefulWidget {
   GamePage({super.key});
+
+  @override
+  State<GamePage> createState() => _GamePageState();
+}
+
+class _GamePageState extends State<GamePage> {
   final Game _game = Game();
 
   @override
@@ -63,7 +71,10 @@ class GamePage extends StatelessWidget {
             Row(children: [for (final x in guess) Title(x.char, x.type)]),
           GuessInput(
             onSubmitGuess: (guess) {
-              print(guess);
+              setState(() {
+                _game.guess(guess);
+              });
+              ;
             },
           ),
         ],
